@@ -1,0 +1,10 @@
+.message-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 255, 0, 0.5);
+  padding: 5px 10px;
+  z-index: 10000;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+}
