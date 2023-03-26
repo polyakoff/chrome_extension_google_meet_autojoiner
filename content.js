@@ -5,7 +5,8 @@ chrome.storage.local.get('rows', ({ rows }) => {
   const currentUrl = window.location.href;
 
   for (const row of rows) {
-    if (row.length >= 3 && currentUrl.includes(row[0])) {
+    const trimmedRowUrl = row[0].replace(/https?:\/\//, '').trim(); // Remove "http://" or "https://" and trim spaces
+    if (row.length >= 3 && currentUrl.includes(trimmedRowUrl)) {
       const message = row[1] + " — " + row[2];
       const messageDiv = document.createElement('div');
       messageDiv.innerText = message;
@@ -44,7 +45,7 @@ function joinGoogleMeet() {
   const observer = new MutationObserver((mutationsList, observer) => {
     for (const mutation of mutationsList) {
       if (mutation.type === 'childList') {
-        const joinButton = findButtonByText('Приєднатися зараз');
+        const joinButton = findButtonByText('Приєднатися зараз') || findButtonByText('Надіслати запит на приєднання');
         if (joinButton) {
           console.log('Join button found:', joinButton);
           joinButton.click();
@@ -61,5 +62,5 @@ function joinGoogleMeet() {
   // Set a timeout before starting the observer
   setTimeout(() => {
     observer.observe(document.body, { childList: true, subtree: true });
-  }, 1000); // 1000 milliseconds (1 second)
+  }, 1500); // 1500 milliseconds (1.5 seconds)
 }
