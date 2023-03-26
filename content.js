@@ -42,25 +42,25 @@ function findButtonByText(text) {
 }
 
 function joinGoogleMeet() {
-  const observer = new MutationObserver((mutationsList, observer) => {
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'childList') {
-        const joinButton = findButtonByText('Приєднатися зараз') || findButtonByText('Надіслати запит на приєднання');
-        if (joinButton) {
-          console.log('Join button found:', joinButton);
-          joinButton.click();
-          console.log('Join button clicked');
-          observer.disconnect();
-          return;
-        } else {
-          console.log('Join button not found yet');
-        }
-      }
-    }
-  });
+  let attempts = 0;
 
-  // Set a timeout before starting the observer
-  setTimeout(() => {
-    observer.observe(document.body, { childList: true, subtree: true });
-  }, 1500); // 1500 milliseconds (1.5 seconds)
+  const attemptButtonClick = () => {
+    attempts++;
+    const joinButton = findButtonByText('Приєднатися зараз') || findButtonByText('Надіслати запит на приєднання');
+
+    if (joinButton) {
+      console.log('Join button found:', joinButton);
+      joinButton.click();
+      console.log('Join button clicked');
+    } else {
+      console.log('Join button not found');
+    }
+
+    if (attempts < 3) {
+      setTimeout(attemptButtonClick, 1000);
+    }
+  };
+
+  // Set a timeout before starting the button clicking attempts
+  setTimeout(attemptButtonClick, 1000); // 1000 milliseconds (1 second)
 }
